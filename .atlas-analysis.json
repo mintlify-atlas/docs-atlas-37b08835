@@ -1,0 +1,55 @@
+{
+  "projectType": "saas",
+  "projectName": "SJSU Purity Test",
+  "projectDescription": "A fun, community-driven purity test web app for San Jose State University students to check off campus experiences and see how their score compares to the SJSU community.",
+  "theme": "almond",
+  "primaryColor": "#6c6c6c",
+  "lightColor": "#0c0c0c",
+  "darkColor": "#b3b3b3",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Overview",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": ["introduction", "quickstart"]
+          },
+          {
+            "group": "How It Works",
+            "pages": ["how-it-works/the-test", "how-it-works/scoring", "how-it-works/statistics"]
+          }
+        ]
+      },
+      {
+        "tab": "Developer Guide",
+        "groups": [
+          {
+            "group": "Setup",
+            "pages": ["developer/local-setup", "developer/environment-variables", "developer/database"]
+          },
+          {
+            "group": "Architecture",
+            "pages": ["developer/architecture", "developer/tech-stack"]
+          },
+          {
+            "group": "API Reference",
+            "pages": ["developer/api/submit", "developer/api/stats"]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "100-question SJSU-specific purity test covering academics, campus life, dining, parking, and social experiences",
+    "Automatic purity score calculation based on checked items",
+    "MongoDB-backed result persistence for community statistics",
+    "Community statistics page showing average scores and per-question response rates",
+    "Share result functionality via clipboard",
+    "Responsive, vintage-styled UI with Times New Roman typography"
+  ],
+  "publicApiSurface": [
+    "POST /api/submit — Submit test answers and score to MongoDB",
+    "GET /api/stats — Retrieve aggregate statistics: totalTests, averageScore, questionStats[]"
+  ]
+}
