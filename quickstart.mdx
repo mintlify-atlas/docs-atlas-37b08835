@@ -1,80 +1,78 @@
 ---
 title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+description: "Take the SJSU Purity Test in minutes — a step-by-step guide from start to finish."
 ---
 
-## Get started in three steps
+# Take the SJSU Purity Test
 
-Get your documentation site running locally and make your first customization.
+Taking the SJSU Purity Test takes just a few minutes. Follow the steps below to get your score and see how you compare to other Spartans.
 
-### Step 1: Set up your local environment
+<Steps>
+  <Step title="Visit the Test">
+    Go to the SJSU Purity Test website. You'll see the official test header and introduction explaining the purpose of the test.
+  </Step>
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
+  <Step title="Read the Caution Notice">
+    Before you begin, you'll see an important warning:
 
-### Step 2: Deploy your changes
+    <Warning>
+    Caution: This is not a bucket list. You are beyond cooked if you complete all the items on this list.
+    </Warning>
 
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+    This test measures experiences you've had — it's not a checklist of things to do. A lower score means you've experienced more at SJSU.
+  </Step>
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+  <Step title="Check Off Your Experiences">
+    The test contains **100 questions** about SJSU experiences. For each item, click the checkbox if you've done it. Questions cover topics like:
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
+    - Academic experiences (classes, professors, assignments)
+    - Campus life (dorms, dining, the MLK Library)
+    - Social experiences (organizations, parties, relationships)
+    - Local spots (Sparcos, Halal Shack, downtown San Jose)
 
-### Step 3: Go live
+    <Tip>
+    Scroll through all 100 questions and check off every experience you've had. Don't worry about the order — just mark what applies to you.
+    </Tip>
+  </Step>
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+  <Step title="Calculate Your Score">
+    Once you've checked off all your experiences, click the **Calculate My Score** button at the bottom of the page.
 
-## Next steps
+    Your purity score is calculated using this formula:
 
-Now that you have your docs running, explore these key features:
+    ```
+    score = round((total_questions - checked_count) / total_questions * 100)
+    ```
 
-<CardGroup cols={2}>
+    With 100 total questions, the math is straightforward:
+    - If you've done 20 things → your score is 80
+    - If you've done 50 things → your score is 50
+    - If you've done 0 things → your score is 100 (purest!)
 
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
+    <Info>
+    **Higher score = purer.** A score of 100 means you haven't done any of the listed experiences, while a lower score means you've had more SJSU experiences.
+    </Info>
+  </Step>
+
+  <Step title="View Your Results">
+    After calculating, you'll be taken to the results page showing your SJSU Purity Score prominently displayed.
+  </Step>
+
+  <Step title="Share or Explore Stats">
+    From the results page, you can:
+
+    - **Share Result** — Copies your score and a link to the test to your clipboard, ready to paste anywhere
+    - **Take the test again** — Retake the test if you want to double-check your answers
+    - **View Statistics** — See how your score compares to others and which experiences are most common among SJSU students
+  </Step>
+</Steps>
+
+<Tip>
+When you share your result, it copies text like "I got 65 on the SJSU Purity Test! Try it yourself:" along with the website link. Paste it on social media, in group chats, or anywhere you want to challenge your friends.
+</Tip>
+
+## Want to Learn More?
+
+<Card title="How It Works" href="/how-it-works/the-test" icon="arrow-right">
+  Dive deeper into how the test works, including the question categories and what your score really means.
 </Card>
-
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
-
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
-
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
-
-</CardGroup>
-
-<Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
-</Note>

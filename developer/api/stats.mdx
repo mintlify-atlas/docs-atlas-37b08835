@@ -1,0 +1,117 @@
+---
+title: "GET /api/stats"
+description: "Retrieve aggregate community statistics: total submissions, average score, and per-question response rates."
+---
+
+## Endpoint
+
+```
+GET /api/stats
+```
+
+Returns aggregated statistics for all test submissions stored in MongoDB. Used by the `/stats` page to display the community dashboard.
+
+<Note>
+  This route sets `export const dynamic = 'force-dynamic'` and `export const revalidate = 0`, so it always fetches fresh data from MongoDB. Responses are never cached by Next.js or a CDN.
+</Note>
+
+## Request
+
+No request body or query parameters.
+
+## Response
+
+### Success — `200 OK`
+
+<ResponseField name="totalTests" type="number">
+  Total number of test submissions stored in the `testresults` MongoDB collection.
+</ResponseField>
+
+<ResponseField name="averageScore" type="number">
+  The arithmetic mean of all stored scores, computed via a MongoDB `$avg` aggregation. Returns `0` if no submissions exist yet.
+</ResponseField>
+
+<ResponseField name="questionStats" type="object[]">
+  Per-question breakdown, one entry per question (up to 100 items). Sorted by question index.
+
+  <Expandable title="questionStats item properties">
+    <ResponseField name="question" type="string">
+      The full text of the question (e.g. `"Tried Sparcos?"`).
+    </ResponseField>
+    <ResponseField name="count" type="number">
+      How many test-takers checked (answered `true` to) this question.
+    </ResponseField>
+    <ResponseField name="percentage" type="number">
+      Fraction of all test-takers who checked this item: `count / totalTests`. Range is `0` to `1`. Multiply by 100 to get a percentage.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Error — `500 Internal Server Error`
+
+<ResponseField name="error" type="string">
+  Always `"Failed to fetch statistics"` when the MongoDB query fails.
+</ResponseField>
+
+<ResponseField name="details" type="string">
+  The underlying error message from the caught exception, for debugging.
+</ResponseField>
+
+## Examples
+
+<CodeGroup>
+
+```bash curl
+curl https://your-domain.com/api/stats
+```
+
+```typescript TypeScript (fetch)
+const response = await fetch('/api/stats');
+
+if (!response.ok) {
+  const errorData = await response.json();
+  throw new Error(`Failed to fetch statistics: ${errorData.details || 'Unknown error'}`);
+}
+
+const data = await response.json();
+
+console.log(data.totalTests);   // e.g. 1042
+console.log(data.averageScore); // e.g. 68.4
+
+// Per-question breakdown
+data.questionStats.forEach(stat => {
+  console.log(`${stat.question}: ${(stat.percentage * 100).toFixed(1)}% checked it`);
+});
+```
+
+</CodeGroup>
+
+## Example response
+
+```json
+{
+  "totalTests": 1042,
+  "averageScore": 68.4,
+  "questionStats": [
+    {
+      "question": "Current student at SJSU?",
+      "count": 891,
+      "percentage": 0.855
+    },
+    {
+      "question": "Tried Sparcos?",
+      "count": 734,
+      "percentage": 0.704
+    },
+    {
+      "question": "Got rejected from every UC?",
+      "count": 312,
+      "percentage": 0.299
+    }
+  ]
+}
+```
+
+<Tip>
+  The `questionStats` array only includes questions that have at least one response. If a question index has no data in the database, it may be absent from the array.
+</Tip>

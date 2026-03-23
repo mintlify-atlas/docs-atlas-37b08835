@@ -1,0 +1,64 @@
+---
+title: "Tech Stack"
+description: "Technologies used in the SJSU Purity Test application"
+---
+
+# Tech Stack
+
+The SJSU Purity Test is built with a modern, minimal tech stack optimized for fast development and simple deployment.
+
+<CardGroup cols={2}>
+  <Card title="Next.js 15" href="https://nextjs.org">
+    App Router with file-based routing, Turbopack for fast builds, and React Server Components for API routes. Provides the foundation for both UI and backend in a single framework.
+  </Card>
+
+  <Card title="React 19" href="https://react.dev">
+    Latest React with `useState` for answer state management, `useRouter` for client-side navigation, and `Suspense` boundaries for async components like the results page.
+  </Card>
+
+  <Card title="TypeScript" href="https://www.typescriptlang.org">
+    Strict typing throughout the codebase. Interfaces for stats data, proper typing for Mongoose connections, and full type safety from frontend to backend.
+  </Card>
+
+  <Card title="Mongoose 8" href="https://mongoosejs.com">
+    ODM for MongoDB with schema definition and model creation. Includes connection caching pattern to prevent multiple connections during development hot reloads.
+  </Card>
+
+  <Card title="MongoDB" href="https://www.mongodb.com">
+    Document store for test results. Each submission stores the score, answers array, and timestamp. Aggregation pipelines used for statistics calculation.
+  </Card>
+
+  <Card title="Tailwind CSS 4" href="https://tailwindcss.com">
+    Utility-first CSS framework for styling. Configured via `@tailwindcss/postcss` for the new v4 architecture.
+  </Card>
+</CardGroup>
+
+## Dependencies
+
+From `package.json`:
+
+```json
+{
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "next": "15.2.8",
+    "mongoose": "^8.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@tailwindcss/postcss": "^4",
+    "tailwindcss": "^4",
+    "eslint": "^9",
+    "eslint-config-next": "15.2.4",
+    "@eslint/eslintrc": "^3"
+  }
+}
+```
+
+<Tip>
+The development server uses Turbopack for significantly faster hot reload times. The dev script is configured as `next dev --turbopack` in package.json.
+</Tip>

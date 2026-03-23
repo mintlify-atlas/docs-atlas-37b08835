@@ -1,0 +1,86 @@
+---
+title: "Scoring"
+description: "Learn how your SJSU Purity Test score is calculated and what different score ranges mean."
+---
+
+Your purity score is calculated based on how many questions you checked. The fewer experiences you've had, the higher your purity score.
+
+## The Formula
+
+The score is calculated using this exact formula from the source code:
+
+```typescript
+const checkedCount = answers.filter(Boolean).length;
+const score = Math.round(((questions.length - checkedCount) / questions.length) * 100);
+```
+
+## How It Works
+
+<Steps>
+  <Step title="Count your checked items">
+    Each checkbox you selected counts as one "checked" item. More checked items = more experiences.
+  </Step>
+  <Step title="Subtract from total">
+    Take 100 (the total number of questions) and subtract your checked count.
+  </Step>
+  <Step title="Calculate percentage">
+    Divide by 100 and multiply by 100 to get your purity percentage.
+  </Step>
+  <Step title="Round to whole number">
+    The result is rounded to the nearest whole number for your final score.
+  </Step>
+</Steps>
+
+## In Plain English
+
+- **100 questions total** — Every question counts equally
+- **Each checked item LOWERS your score** — More experiences = less pure
+- **Unchecked items keep your score high** — Fewer experiences = more pure
+- **Maximum score is 100** (you checked nothing)
+- **Minimum score is 0** (you checked everything)
+
+<Note>
+A high score means you're "pure"—you haven't experienced many of the items on the list. A low score means you've had more SJSU experiences. Neither is inherently good or bad!
+</Note>
+
+## Score Ranges
+
+| Score Range | Rating |
+| ----------- | ------ |
+| 90-100 | Pure Spartan |
+| 70-89 | Average Spartan |
+| 50-69 | Experienced Spartan |
+| 30-49 | Well-Seasoned |
+| 0-29 | Beyond Cooked |
+
+## Example Calculations
+
+<CardGroup cols={2}>
+  <Card title="First-Year Student">
+    Checked 15 items out of 100.
+    
+    **Score:** (100 - 15) / 100 × 100 = **85**
+    
+    *Average Spartan*
+  </Card>
+  <Card title="Senior Student">
+    Checked 45 items out of 100.
+    
+    **Score:** (100 - 45) / 100 × 100 = **55**
+    
+    *Experienced Spartan*
+  </Card>
+</CardGroup>
+
+## What Happens to Your Score
+
+After you submit your test:
+
+1. Your score is displayed on the results page
+2. Your score is **anonymously saved** to the community database
+3. Your individual answers contribute to the per-question statistics
+4. You can share your score with friends
+
+<Tip>
+Your score is just for fun! It's a way to reflect on your SJSU journey and see how your experiences compare to fellow Spartans.
+</Tip>

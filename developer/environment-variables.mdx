@@ -1,0 +1,63 @@
+---
+title: "Environment Variables"
+description: "Configure the required environment variables for the SJSU Purity Test"
+---
+
+## Required Variables
+
+The SJSU Purity Test requires only one environment variable to run:
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `MONGODB_URI` | Yes | MongoDB connection string for your database |
+
+## Setting Up Environment Variables
+
+Create a `.env.local` file in the root of your project:
+
+```bash title=".env.local"
+MONGODB_URI=mongodb+srv://<user>:<password>@<cluster>.mongodb.net/<dbname>
+```
+
+### Connection String Format
+
+The MongoDB connection string follows this format:
+
+```
+mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<database>
+```
+
+Replace the placeholders:
+
+- `<username>` — Your MongoDB Atlas username
+- `<password>` — Your MongoDB Atlas password (URL-encoded if it contains special characters)
+- `<cluster>` — Your cluster hostname (e.g., `cluster0.xxxxx`)
+- `<database>` — The database name to use (e.g., `puritytest`)
+
+<Warning>
+
+If `MONGODB_URI` is not defined, the application will throw an error:
+
+```
+Please define the MONGODB_URI environment variable inside .env.local
+```
+
+Make sure to create the `.env.local` file before running the application.
+
+</Warning>
+
+<Tip>
+
+Use **MongoDB Atlas** free tier for quick setup. Create a free cluster at [mongodb.com/atlas](https://www.mongodb.com/atlas), then get your connection string from the "Connect" button in your cluster dashboard.
+
+</Tip>
+
+## Security Notes
+
+<Info>
+
+The `.env.local` file is automatically ignored by Git and should **never** be committed to version control. This keeps your database credentials secure.
+
+</Info>
+
+When deploying to production (e.g., Vercel), set the `MONGODB_URI` environment variable in your hosting platform's dashboard.

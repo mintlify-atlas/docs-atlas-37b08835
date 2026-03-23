@@ -1,0 +1,94 @@
+---
+title: "POST /api/submit"
+description: "Submit a completed purity test — saves the score and answers to MongoDB."
+---
+
+## Endpoint
+
+```
+POST /api/submit
+```
+
+Saves a completed test result (score + per-question answers) to MongoDB. Called automatically when a user clicks **Calculate My Score** on the main quiz page.
+
+## Request
+
+### Headers
+
+| Header | Value |
+|---|---|
+| `Content-Type` | `application/json` |
+
+### Body parameters
+
+<ParamField body="score" type="number" required>
+  The calculated purity score, an integer between 0 and 100. Computed on the client before submission:
+
+  ```typescript
+  const score = Math.round(((questions.length - checkedCount) / questions.length) * 100);
+  ```
+
+  Where `questions.length` is 100 and `checkedCount` is the number of items the user checked.
+</ParamField>
+
+<ParamField body="answers" type="boolean[]" required>
+  Array of exactly 100 boolean values representing the user's checked answers. Index 0 corresponds to question 1, index 99 to question 100. `true` means the item was checked (the user has done it).
+</ParamField>
+
+## Response
+
+### Success — `200 OK`
+
+<ResponseField name="success" type="boolean">
+  Always `true` on a successful save.
+</ResponseField>
+
+### Error — `500 Internal Server Error`
+
+<ResponseField name="error" type="string">
+  Human-readable error message. Always `"Failed to save test result"` when the MongoDB write fails.
+</ResponseField>
+
+## Examples
+
+<CodeGroup>
+
+```bash curl
+curl -X POST https://your-domain.com/api/submit \
+  -H "Content-Type: application/json" \
+  -d '{"score": 72, "answers": [true, false, false, true]}'
+```
+
+```typescript TypeScript (fetch)
+const answers = new Array(100).fill(false); // user's actual answers
+const checkedCount = answers.filter(Boolean).length;
+const score = Math.round(((100 - checkedCount) / 100) * 100);
+
+const response = await fetch('/api/submit', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    score,
+    answers: answers.slice(0, 100)
+  })
+});
+
+if (!response.ok) {
+  throw new Error('Failed to submit results');
+}
+
+const data = await response.json();
+// data.success === true
+```
+
+</CodeGroup>
+
+<Note>
+  On the client, after a successful submission the user is redirected to `/results?score=N`. If the request fails, the app still redirects to the results page using the locally-calculated score — submissions failures are silent to the user.
+</Note>
+
+<Warning>
+  The `answers` array must contain exactly 100 boolean values — one per question. Submitting a shorter or longer array will result in misaligned statistics in the community stats page.
+</Warning>

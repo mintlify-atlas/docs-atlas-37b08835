@@ -1,0 +1,90 @@
+---
+title: "Statistics"
+description: "Learn about the community statistics page and how SJSU Purity Test data is collected and displayed."
+---
+
+The statistics page shows aggregate data from all Spartans who have taken the purity test. It's a fun way to see how your experiences compare to the broader SJSU community.
+
+## What the Stats Page Shows
+
+<CardGroup cols={2}>
+  <Card title="Total Tests Taken" icon="chart-bar">
+    The total number of Spartans who have submitted their purity test results.
+  </Card>
+  <Card title="Average Score" icon="calculator">
+    The mean purity score across all test submissions.
+  </Card>
+</CardGroup>
+
+### Per-Question Breakdown
+
+For each of the 100 questions, the stats page displays:
+
+- **The question text** — What was asked
+- **Count** — How many people checked this item
+- **Percentage** — What portion of test-takers checked this item
+
+## How Percentages Work
+
+The percentage for each question is calculated as:
+
+```
+percentage = count / totalTests
+```
+
+For example, if 500 people have taken the test and 350 of them checked "Been late to class?":
+
+- **Count:** 350
+- **Percentage:** 350 / 500 = 0.70 (70%)
+
+<Info>
+This means 70% of all Spartans who took the test have been late to class at least once.
+</Info>
+
+## Data Flow
+
+<Steps>
+  <Step title="Take the test">
+    You answer 100 questions and submit your results.
+  </Step>
+  <Step title="Save to MongoDB">
+    Your score and answers are anonymously stored in the database.
+  </Step>
+  <Step title="Aggregate query">
+    The stats API runs aggregation queries to calculate totals and averages.
+  </Step>
+  <Step title="Display results">
+    The stats page fetches and displays the live statistics.
+  </Step>
+</Steps>
+
+## What's Collected
+
+When you submit the test, only this data is stored:
+
+- Your **score** (a number from 0-100)
+- Your **answers** (an array of 100 true/false values)
+
+**No personal information is collected**—no names, emails, student IDs, or any identifying data.
+
+<Tip>
+The statistics update live as more Spartans take the test! Check back after major campus events like SpartanFest or the start of a new semester to see how the numbers change.
+</Tip>
+
+## Technical Details
+
+For developers interested in the raw data, the statistics are available via the public API:
+
+<Card title="Stats API" icon="code">
+  The `/api/stats` endpoint returns JSON with `totalTests`, `averageScore`, and `questionStats` array.
+  
+  See the [Stats API documentation](/developer/api/stats) for full details.
+</Card>
+
+### Aggregation Logic
+
+The backend uses MongoDB aggregation to calculate:
+
+1. **Total tests:** `countDocuments()` on all submissions
+2. **Average score:** `$avg` aggregation on the score field
+3. **Per-question counts:** `$unwind` the answers array with index, then `$sum` true values grouped by question index

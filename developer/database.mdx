@@ -1,0 +1,105 @@
+---
+title: "Database"
+description: "MongoDB setup and data model for the SJSU Purity Test"
+---
+
+## Overview
+
+The SJSU Purity Test uses **MongoDB** as its database, accessed through **Mongoose** ODM (Object Document Modeling). This provides a straightforward way to define schemas and interact with the database.
+
+## Connection
+
+The database connection is managed in `src/lib/mongodb.ts`. The module exports a `connectDB` function that establishes and caches the MongoDB connection.
+
+```typescript title="src/lib/mongodb.ts"
+import mongoose from 'mongoose';
+
+const MONGODB_URI = process.env.MONGODB_URI!;
+
+async function connectDB(): Promise<typeof mongoose> {
+  // Connection logic with caching
+}
+
+export default connectDB;
+```
+
+### Connection Caching
+
+The connection uses a caching pattern to avoid reconnecting on every hot reload during development:
+
+```typescript
+const cached: MongooseConnection = globalWithMongoose.mongoose || {
+  conn: null,
+  promise: null,
+};
+
+async function connectDB(): Promise<typeof mongoose> {
+  if (cached.conn) {
+    return cached.conn;
+  }
+  // ...
+}
+```
+
+<Note>
+
+The connection is **lazily initialized** — it only connects to MongoDB when the first API route calls `connectDB()`. This improves startup time and avoids unnecessary connections.
+
+</Note>
+
+## Data Model
+
+### TestResult Schema
+
+The main data model is the `TestResult`, which stores user test submissions:
+
+```typescript title="src/lib/models/TestResult.ts"
+const TestResultSchema = new mongoose.Schema({
+  score: Number,
+  answers: [Boolean],
+  timestamp: { type: Date, default: Date.now }
+});
+
+export const TestResult = mongoose.models.TestResult || 
+  mongoose.model('TestResult', TestResultSchema);
+```
+
+### Schema Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `score` | `Number` | The purity score (0-100 integer) |
+| `answers` | `[Boolean]` | Array of 100 boolean values representing each answer |
+| `timestamp` | `Date` | Auto-set to the current time when created |
+
+### Collection Name
+
+Mongoose automatically creates a MongoDB collection named **`testresults`** (lowercase plural of the model name) when the first document is saved.
+
+## Usage Example
+
+```typescript
+import connectDB from '@/lib/mongodb';
+import { TestResult } from '@/lib/models/TestResult';
+
+// In an API route
+await connectDB();
+
+const result = new TestResult({
+  score: 85,
+  answers: [true, false, true, /* ... 97 more */]
+});
+
+await result.save();
+```
+
+## Model Registration
+
+The model uses a pattern that prevents duplicate model compilation during hot reload:
+
+```typescript
+export const TestResult = mongoose.models.TestResult || 
+  mongoose.model('TestResult', TestResultSchema);
+```
+
+This checks if the model already exists in `mongoose.models` before creating a new one.

@@ -1,0 +1,78 @@
+---
+title: "Architecture"
+description: "Overview of the SJSU Purity Test application architecture, file structure, and data flow"
+---
+
+# Architecture
+
+The SJSU Purity Test is a Next.js 15 App Router single-page application with two API routes and a MongoDB backend. The app uses a straightforward client-server architecture where all UI pages are client components and API routes handle data persistence.
+
+## Directory Structure
+
+```
+src/
+├── app/
+│   ├── page.tsx          # Main quiz page (100 questions, answer state, submit)
+│   ├── layout.tsx        # Root layout
+│   ├── globals.css       # Global styles
+│   ├── results/
+│   │   └── page.tsx      # Score display + share + nav to stats
+│   ├── stats/
+│   │   └── page.tsx      # Community stats dashboard
+│   └── api/
+│       ├── submit/
+│       │   └── route.ts  # POST /api/submit — save result to MongoDB
+│       └── stats/
+│           └── route.ts  # GET /api/stats — aggregate stats from MongoDB
+└── lib/
+    ├── mongodb.ts        # Mongoose connection with caching
+    └── models/
+        └── TestResult.ts # TestResult Mongoose model
+```
+
+## Data Flow
+
+The application has three main data flows:
+
+### 1. Quiz Flow
+
+1. User loads the quiz page (`/`) and sees 100 questions
+2. User checks items they have done, stored in local `useState` as a `boolean[]`
+3. User clicks "Calculate My Score" button
+4. Score is calculated client-side: `Math.round(((questions.length - checkedCount) / questions.length) * 100)`
+5. POST request to `/api/submit` with `{ score, answers }`
+6. API saves result to MongoDB via `TestResult` model
+7. User is redirected to `/results?score=N`
+
+### 2. Results Flow
+
+1. Results page reads score from URL query parameter via `useSearchParams().get('score')`
+2. Score is displayed prominently
+3. User can:
+   - Copy share text to clipboard
+   - Navigate to retake the test (`/`)
+   - Navigate to view statistics (`/stats`)
+
+### 3. Stats Flow
+
+1. Stats page fetches data from `GET /api/stats` on mount via `useEffect`
+2. API aggregates data from MongoDB:
+   - `totalTests`: count of all documents
+   - `averageScore`: average of all scores
+   - `questionStats`: per-question answer counts and percentages
+3. Results displayed with loading and error states
+
+<Note>
+All UI pages are client components (marked with `'use client'`) because they use React hooks like `useState`, `useRouter`, and `useSearchParams`. Only the API routes (`route.ts` files) are server components.
+</Note>
+
+## Score Calculation
+
+The purity score is calculated entirely client-side before submission:
+
+```typescript
+const checkedCount = answers.filter(Boolean).length;
+const score = Math.round(((questions.length - checkedCount) / questions.length) * 100);
+```
+
+A higher score indicates more "pure" (fewer items checked). The score represents the percentage of items the user has NOT done.
