@@ -40,8 +40,8 @@ Taking the SJSU Purity Test takes just a few minutes. Follow the steps below to 
 
     Your purity score is calculated using this formula:
 
-    ```
-    score = round((total_questions - checked_count) / total_questions * 100)
+    ```typescript
+    const score = Math.round(((questions.length - checkedCount) / questions.length) * 100);
     ```
 
     With 100 total questions, the math is straightforward:

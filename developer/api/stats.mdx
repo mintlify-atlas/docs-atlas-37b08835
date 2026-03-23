@@ -113,5 +113,5 @@ data.questionStats.forEach(stat => {
 ```
 
 <Tip>
-  The `questionStats` array only includes questions that have at least one response. If a question index has no data in the database, it may be absent from the array.
+  The `questionStats` array is built by unwinding every submission's `answers` array and grouping by index. A question will appear with `count: 0` if nobody checked it. If no submissions exist at all, `questionStats` will be an empty array.
 </Tip>

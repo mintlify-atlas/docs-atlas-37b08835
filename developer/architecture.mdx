@@ -63,7 +63,7 @@ The application has three main data flows:
 3. Results displayed with loading and error states
 
 <Note>
-All UI pages are client components (marked with `'use client'`) because they use React hooks like `useState`, `useRouter`, and `useSearchParams`. Only the API routes (`route.ts` files) are server components.
+All UI pages are client components (marked with `'use client'`) because they use React hooks like `useState`, `useRouter`, and `useSearchParams`. The API routes (`route.ts` files) are Next.js Route Handlers that run exclusively on the server — they are not React components.
 </Note>
 
 ## Score Calculation

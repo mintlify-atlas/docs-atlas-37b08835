@@ -14,58 +14,56 @@ Before you begin, ensure you have the following installed:
 ## Quick Start
 
 <Steps>
+  <Step title="Clone the repository">
+    ```bash
+    git clone https://github.com/dannymang/sjsuricepurity.git
+    cd sjsuricepurity
+    ```
+  </Step>
 
-### Clone the repository
+  <Step title="Install dependencies">
+    <CodeGroup>
 
-```bash
-git clone https://github.com/dannymang/sjsuricepurity.git
-cd sjsuricepurity
-```
+    ```bash npm
+    npm install
+    ```
 
-### Install dependencies
+    ```bash yarn
+    yarn install
+    ```
 
-<CodeGroup>
+    ```bash pnpm
+    pnpm install
+    ```
 
-```bash npm
-npm install
-```
+    </CodeGroup>
+  </Step>
 
-```bash yarn
-yarn install
-```
+  <Step title="Set up environment variables">
+    Create a `.env.local` file in the project root with your MongoDB connection string. See the [Environment Variables](/developer/environment-variables) page for detailed instructions.
+  </Step>
 
-```bash pnpm
-pnpm install
-```
+  <Step title="Run the development server">
+    <CodeGroup>
 
-</CodeGroup>
+    ```bash npm
+    npm run dev
+    ```
 
-### Set up environment variables
+    ```bash yarn
+    yarn dev
+    ```
 
-Create a `.env.local` file in the project root with your MongoDB connection string. See the [Environment Variables](/developer/environment-variables) page for detailed instructions.
+    ```bash pnpm
+    pnpm dev
+    ```
 
-### Run the development server
+    </CodeGroup>
+  </Step>
 
-<CodeGroup>
-
-```bash npm
-npm run dev
-```
-
-```bash yarn
-yarn dev
-```
-
-```bash pnpm
-pnpm dev
-```
-
-</CodeGroup>
-
-### Open the application
-
-Navigate to [http://localhost:3000](http://localhost:3000) in your browser to see the application running.
-
+  <Step title="Open the application">
+    Navigate to [http://localhost:3000](http://localhost:3000) in your browser to see the application running.
+  </Step>
 </Steps>
 
 ## Available Scripts
